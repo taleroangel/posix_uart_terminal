@@ -15,21 +15,24 @@ void *recv_thread(void *params) {
   pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, NULL);
 
   while (1) {
-    // Create the message buffer
+
+    ssize_t bytes_recv;
+    size_t bytes_sent;
+
+    /* Create the message buffer */
     message_t message_buffer;
     memset(message_buffer, 0, sizeof(message_buffer));
 
-    // Recieve bytes
-    ssize_t bytes_recv =
+    /* Recieve bytes */
+    bytes_recv =
         mq_receive(terminal_to_uart_mq, message_buffer, MESSAGE_MAX_SIZE, NULL);
 
     if (bytes_recv > 0L) {
-      // Print contents
+      /* Print contents */
       printf("[UART: RecvTerminal]\tRecieved: `%s`\n", message_buffer);
 
-      // Send to UART
-      ssize_t bytes_sent =
-          write(serial_port, message_buffer, sizeof(message_buffer));
+      /* Send to UART */
+      bytes_sent = write(serial_port, message_buffer, sizeof(message_buffer));
 
       printf("[UART: SendToSerial]\tSent %zu bytes of data\n", bytes_sent);
       fflush(stdout);
@@ -47,20 +50,21 @@ void *send_thread(void *params) {
 
   while (1) {
 
-    // Create the message buffer
+    ssize_t read_bytes;
+
+    /* Create the message buffer */
     message_t message_buffer;
     memset(message_buffer, 0, sizeof(message_buffer));
 
-    // Recieve from UART
-    ssize_t read_bytes =
-        read(serial_port, message_buffer, sizeof(message_buffer));
+    /* Recieve from UART */
+    read_bytes = read(serial_port, message_buffer, sizeof(message_buffer));
 
     if (read_bytes > 0L) {
-      // Print contents
+      /* Print contents */
       printf("[UART: RecvSerial\tRecieved: `%s`\n", message_buffer);
       fflush(stdout);
 
-      // Send to UART
+      /* Send to UART */
       mq_send(uart_to_terminal_mq, message_buffer, MESSAGE_MAX_SIZE,
               MESSAGE_PRIORITY);
     }

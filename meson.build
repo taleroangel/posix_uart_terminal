@@ -2,10 +2,10 @@ project(
 	'posix_uart_terminal',
 	'c',
 	version: '1',
-	default_options: ['warning_level=3'],
+	default_options: ['warning_level=3', 'c_std=c89'],
 )
 
-add_project_arguments(['-Wno-unused-parameter'], language: 'c')
+add_project_arguments(['-Wno-unused-parameter', '-pedantic', '-ansi'], language: 'c')
 add_project_link_arguments([], language: 'c')
 
 inc_dir = include_directories('include')

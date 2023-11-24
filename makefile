@@ -1,13 +1,15 @@
-CC = @gcc
-STD = c99
-LIBS = -pthread -lrt -lc
+CC = gcc
+STD = gnu9x
+LIBS = -lposix -lmq -lc
+DEFINE = -D_POSIX_C_SOURCE=200112L
+ARGS = -ansi -pedantic -Wall -Wno-unused-parameter
 
 SRC_DIR = ./src
 BLD_DIR = ./build
 INC_DIR = ./include
 OUT_DIR = ./bin
 
-FLAGS = -std=$(STD) $(LIBS) -Wall -I$(INC_DIR)
+FLAGS = -std=$(STD) $(LIBS) -I$(INC_DIR) $(DEFINE) $(ARGS)
 
 all: builddir $(OUT_DIR)/uart $(OUT_DIR)/terminal
 
