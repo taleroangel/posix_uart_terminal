@@ -1,8 +1,8 @@
 CC = gcc
 STD = gnu9x
-LIBS = -lposix -lmq -lc
+LIBS = -lmq -lc
 DEFINE = -D_POSIX_C_SOURCE=200112L
-ARGS = -ansi -pedantic -Wall -Wno-unused-parameter
+ARGS = -ansi -pedantic -Wall
 
 SRC_DIR = ./src
 BLD_DIR = ./build
